@@ -2,6 +2,17 @@
 
 ## Unveröffentlicht
 
+### Ausführliche Hilfe
+
+- **Neue Hilfe mit zwei Reitern** unter „Hilfe“ (oder Taste ?):
+  - **„Für Lernende“** (Sek I und II): Oberfläche, Atome holen und verbinden, Bewegen und Drehen, Bindungen ändern, Infokarte, Farben und Regeln, Darstellung, Polarität und Lewis-Formel, Beispiele, Aufgaben lösen, Ionen, Hilfe bei Problemen, erweiterte Funktionen für die Oberstufe und Tastenkürzel.
+  - **„Für Lehrende“**: Einsatz im Unterricht, Datenschutz und Speicherung, mitgelieferte Aufgaben und Diskussionskarten, eigene Aufgaben erstellen, Aufgaben verteilen (QR-Code, Link, Code, Datei), wie Lernende Aufgaben öffnen, Ergebnisse und Sicherung, das Modell und seine Grenzen mit Quellen.
+- **22 Screenshots** sind als WebP direkt in der Datei eingebettet und werden erst beim Öffnen der Hilfe geladen. Die App bleibt eine einzige Datei und läuft weiter offline.
+- **Inhaltsverzeichnis** je Teil, die Links springen im Fenster.
+- **„Drucken / PDF“** druckt den gewählten Teil mit allen Bildern oder speichert ihn als PDF.
+- Das neue Skript `tools/hilfe-bilder.js` erzeugt die Bilder neu, wenn sich die Oberfläche ändert.
+- Die alte Kurzhilfe enthielt veraltete Angaben (etwa „unten ein Element antippen“). Sie ist vollständig ersetzt.
+
 ### Modelltreue (Abgleich mit der Rostocker Beschreibung des KWM)
 
 - **Winkel in der Infokarte so, wie das Modell sie baut:** Die Wolken bleiben auch bei Mehrfachbindungen tetraedrisch. Bei Ethen steht deshalb jetzt „H–C–H 109,5°, C–C–H 125,3°“ statt „120°“. Wasser, Methan, CO₂ und Ethin sind unverändert.

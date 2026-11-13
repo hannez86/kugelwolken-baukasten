@@ -170,7 +170,7 @@ if (out) fs.mkdirSync(out, { recursive: true });
     const O1 = w.atoms[0], H1 = w.atoms[1], O2 = w.atoms[3], B = w.component(O2);
     const axis = H1.pos.clone().sub(O1.pos).normalize(), lp = w.freePairs(O2)[0];
     const q = new T.Quaternion().setFromUnitVectors(w.cloudDir(O2, lp), axis.clone().negate());
-    B.forEach(a => { a.pos.sub(O2.pos).applyQuaternion(q).add(O2.pos); a.quat.premultiply(q); });
+    const pv = O2.pos.clone(); B.forEach(a => { a.pos.sub(pv).applyQuaternion(q).add(pv); a.quat.premultiply(q); });
     const s = H1.pos.clone().add(axis.clone().multiplyScalar(1.2)).sub(w.cloudCenter(O2, lp));
     B.forEach(a => a.pos.add(s));
     k.ui.selAtom = O1.id; k.ui.selBond = null; k.refresh();
@@ -253,6 +253,29 @@ if (out) fs.mkdirSync(out, { recursive: true });
   const after = await page.evaluate(() => ({ theta: window.__kwm.orbit.theta, c: window.__kwm.world.atoms[0].pos.toArray() }));
   const movedBy = Math.hypot(after.c[0] - grab.c[0], after.c[2] - grab.c[2]);
   ok(after.theta === grab.theta && movedBy > 0.3, 'Ziehen an der C–C-Bindung verschiebt Ethan, Ansicht bleibt (' + movedBy.toFixed(2) + ')');
+
+  // Hilfe: zwei Reiter, alle Bilder vorhanden, Inhaltsverzeichnis scrollt im Fenster, Druckknopf
+  await page.click('#btnHelp');
+  const helpOpen = () => page.$eval('#ovHelp', e => !e.hidden);   // Fenster ist fixed: offsetParent ist immer null
+  ok(await helpOpen() && await vis('#helpL') && !(await vis('#helpT')), 'Hilfe öffnet mit „Für Lernende“');
+  const shotInfo = await page.evaluate(() => {
+    const imgs = [...document.querySelectorAll('#ovHelp img[data-shot]')];
+    return { n: imgs.length, missing: imgs.filter(i => !/^data:image\/webp;base64,/.test(i.src)).map(i => i.dataset.shot), noAlt: imgs.filter(i => !i.alt).length };
+  });
+  ok(shotInfo.n >= 20 && !shotInfo.missing.length && !shotInfo.noAlt, 'Hilfe: ' + shotInfo.n + ' Bilder mit Alternativtext' + (shotInfo.missing.length ? ', fehlend: ' + shotInfo.missing.join() : ''));
+  await page.click('#helpL a[href="#hl-aufgaben"]');
+  ok(await page.evaluate(() => { const r = document.getElementById('hl-aufgaben').getBoundingClientRect(), s = document.querySelector('#ovHelp .sheet').getBoundingClientRect(); return r.top >= s.top - 2 && r.top < s.top + 200 && !location.hash; }), 'Inhaltsverzeichnis springt im Fenster, Adresse bleibt');
+  await page.click('#helpTabT');
+  ok(await vis('#helpT') && !(await vis('#helpL')) && await page.$eval('#helpTabT', e => e.getAttribute('aria-selected') === 'true'), 'Reiter „Für Lehrende“');
+  ok(await page.$$eval('#helpT section h3', hs => hs.map(h => h.textContent).join('|')).then(t => /Aufgaben verteilen/.test(t) && /Modell und seine Grenzen/.test(t)), 'Lehrende: Verteilen und Modellgrenzen');
+  await page.keyboard.press('ArrowLeft');
+  ok(await vis('#helpL'), 'Pfeiltaste wechselt den Reiter');
+  ok(await vis('#helpPrint'), 'Knopf „Drucken / PDF“');
+  await page.keyboard.press('Escape');
+  ok(!(await helpOpen()), 'Esc schließt die Hilfe');
+  await page.keyboard.press('?');
+  ok(await helpOpen(), 'Taste ? öffnet die Hilfe');
+  await page.keyboard.press('Escape');
 
   // Speichern über Neuladen (gleiche Seite, gleicher localStorage)
   await page.evaluate(() => { const k = window.__kwm; k.world.load({ atoms: [], bonds: [], nid: 1, bid: 1 }); k.addExample('h2o'); k.addProton(); });

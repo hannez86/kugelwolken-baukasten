@@ -29,5 +29,6 @@ Die App läuft vollständig im Browser. Es gibt keine Konten, keine Cookies und 
 - Änderungen: [CHANGELOG.md](CHANGELOG.md)
 - Geplante Funktionen: [Entwicklungsplan.md](Entwicklungsplan.md)
 - Tests: [tests/README.md](tests/README.md). Sie laufen bei jedem Pull Request automatisch.
+- Bilder der Hilfe: [tools/hilfe-bilder.js](tools/hilfe-bilder.js) erzeugt sie neu (siehe tests/README.md).
 
 Beiträge sind willkommen, am besten als Issue oder Pull Request. Mit einem Beitrag stimmst du zu, dass er unter CC BY-NC-SA 4.0 veröffentlicht wird.
