@@ -31,3 +31,11 @@ node -e "Object.defineProperty(process.versions,'node',{value:'20.0.0'}); proces
 ```
 
 Beide Skripte geben jede Prüfung als `ok:` oder `FEHLER:` aus und enden mit Exit-Code 0, wenn alles bestanden ist.
+
+## Bilder der Hilfe
+
+```
+node tools/hilfe-bilder.js [HTML-Datei]
+```
+
+Erzeugt die Screenshots der Hilfe („Für Lernende“, „Für Lehrende“) neu und schreibt sie als WebP in den Block `<script id="helpShots">` zwischen den Markierungen `HILFE-BILDER` in `index.html`. Nach Änderungen an der Oberfläche einmal laufen lassen. Braucht Playwright wie die UI-Tests (auch `PLAYWRIGHT_MODULE`). Der UI-Test prüft, dass zu jedem Bild der Hilfe Daten vorhanden sind.
